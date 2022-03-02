@@ -58,3 +58,15 @@ const showAllMobiles = (mobiles, status) => {
 
 }
 
+/* Load All Mobile Details By ID */
+
+const loadMobileDetails = mobileId => {
+    const url = `https://openapi.programming-hero.com/api/phone/${mobileId}`
+
+    // console.log(url)
+    // console.log(mobileid)
+
+    fetch(url)
+        .then(res => res.json())
+        .then(result => mobiledetails(result.data))
+}
