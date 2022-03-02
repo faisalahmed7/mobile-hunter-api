@@ -26,8 +26,8 @@ const loadAllMobile = () => {
         searchArea.value = '';
         const url = `https://openapi.programming-hero.com/api/phones?search=${searchInText}`
         fetch(url)
-            .then(response => response.json())
-            .then(result => showAllMobiles(result.data.slice(0, 19), result.status))
+            .then(res => res.json())
+            .then(result => showAllMobiles(result.data, result.status))
 
     }
 
@@ -81,7 +81,7 @@ const loadMobileDetails = mobileId => {
 
     fetch(url)
         .then(res => res.json())
-        .then(result => mobiledetails(result.data))
+        .then(info => mobiledetails(info.data))
 }
 
 /* Display Sngle Mobile Details */
