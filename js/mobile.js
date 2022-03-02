@@ -1,4 +1,7 @@
 
+
+
+
 /* Loading... Display Handle */
 const toggleLoading = displayStyle => {
     document.getElementById('loading').style.display = displayStyle;
@@ -16,18 +19,20 @@ const loadAllMobile = () => {
     searchInText.toLowerCase();
 
     if (searchInText.length == 0) {
-        toggleLoading('none')
         document.getElementById('error').innerHTML = "Please enter something to continue search!!!";
-
+        toggleShowMore('none')
     }
+
     else {
+
         toggleLoading('block')
+        toggleLoading('none')
         document.getElementById('error').style.display = "none";
         searchArea.value = '';
         const url = `https://openapi.programming-hero.com/api/phones?search=${searchInText}`
         fetch(url)
             .then(res => res.json())
-            .then(result => showAllMobiles(result.data, result.status))
+            .then(result => showAllMobiles(result.data.slice(0, 19), result.status))
 
     }
 
@@ -35,17 +40,17 @@ const loadAllMobile = () => {
 
 
 /* Display ALL Mobile in card layout */
+const mobileDiv = document.getElementById('mobile-container');
 const showAllMobiles = (mobiles, status) => {
     if (status == false) {
         document.getElementById('error').style.display = "block";
-        document.getElementById('error').innerHTML = "API data not found";
+        document.getElementById('error').innerHTML = "Mobile data not found";
+        mobileDiv.textContent = '';
+        mobileDetailDiv.textContent = '';
+        toggleShowMore('none')
     }
     else {
-
         // console.log(mobiles)
-
-        const mobileDiv = document.getElementById('mobile-container');
-
         mobileDiv.textContent = '';
 
         mobiles?.forEach(mobile => {
@@ -56,8 +61,8 @@ const showAllMobiles = (mobiles, status) => {
         <div class="card h-100 mx-3 mt-5">
                 <img src="${mobile.image}" class="card-img-top w-50 mx-auto mt-2" alt="...">
                 <div class="card-body mx-auto">
-                    <h5 class="card-title">${mobile.brand}</h5>
-                    <p class="card-text">${mobile.phone_name}</p>
+                    <h5 class="card-title"> <strong>${mobile.brand}</strong> </h5>
+                    <p class="card-text"> <strong>${mobile.phone_name}</strong> </p>
                     <a href="#"> <button  onclick="loadMobileDetails('${mobile.slug}')"  class="btn btn-primary">Details</button></a>
                 </div>
             </div>
@@ -73,6 +78,7 @@ const showAllMobiles = (mobiles, status) => {
 }
 
 /* Load All Mobile Data By Using ID From API*/
+
 const loadMobileDetails = mobileId => {
     const url = `https://openapi.programming-hero.com/api/phone/${mobileId}`
 
@@ -94,9 +100,8 @@ const mobiledetails = mobile => {
     div.innerHTML = `
     <img src="${mobile.image}" class="card-img-top w-25 mt-3 mx-auto " alt="...">
     <div class="card-body">
-        <h3><strong>Brand:  </strong>${mobile.brand}</h3>
         <h5><strong> ${mobile.name}  </strong> </h5>
-        <p><strong>Realease Date: </strong> ${mobile.releaseDate ? mobile.releaseDate : 'Not Found'}  </p>
+        <p><strong>Realease Date: </strong> ${mobile.releaseDate ? mobile.releaseDate : 'No Release Date Found'}  </p>
         <p><strong>Main Features: </strong></p>
         <p><strong>Storage: </strong>${mobile.mainFeatures.storage ? mobile.mainFeatures.storage : 'Not Found'}</p>
         <p><strong>Display Size: </strong> ${mobile.mainFeatures.displaySize ? mobile.mainFeatures.displaySize : 'Not Found'}  </p>
@@ -108,7 +113,7 @@ const mobiledetails = mobile => {
         ${mobile.mainFeatures.sensors[2] ? mobile.mainFeatures.sensors[2] : 'Not Found'},
         ${mobile.mainFeatures.sensors[3] ? mobile.mainFeatures.sensors[3] : 'Not Found'},
         ${mobile.mainFeatures.sensors[4] ? mobile.mainFeatures.sensors[4] : 'Not Found'},
-        ${mobile.mainFeatures.sensors[5] ? mobile.mainFeatures.sensors[5] : 'Not Found'} </p> 
+        ${mobile.mainFeatures.sensors[5] ? mobile.mainFeatures.sensors[5] : ''} </p> 
         <p><strong>Others: </strong></p>
         <p><strong>WLAN: </strong> ${mobile?.others?.WLAN ?? 'Not Found'}  </p>
         <p><strong>Bluetooth: </strong> ${mobile?.others?.Bluetooth ?? 'Not Found'}  </p>
