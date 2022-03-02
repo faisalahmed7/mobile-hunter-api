@@ -1,31 +1,43 @@
 
 
+const toggleLoading = displayStyle => {
+    document.getElementById('spinner').style.display = displayStyle;
+}
+const toggleShowMore = displayStyle => {
+    document.getElementById('show-more-btn').style.display = displayStyle;
+}
+
+
 const loadAllMobile = () => {
     const searchArea = document.getElementById('search-area');
     const searchInText = searchArea.value;
-
+    searchInText.toLowerCase();
 
     if (searchInText.length == 0) {
-        toggleSpinner('none')
-        document.getElementById('error').innerHTML = "Please enter something to continue search!!!";
+        toggleLoading('none')
+        document.getElementById('text1').innerHTML = "Please enter something to continue search!!!";
 
     } else {
-        toggleSpinner('block')
+        toggleLoading('block')
 
-        document.getElementById('error').style.display = "none";
+
+        document.getElementById('text1').style.display = "none";
         searchArea.value = '';
         const url = `https://openapi.programming-hero.com/api/phones?search=${searchInText}`
         fetch(url)
             .then(response => response.json())
-            .then(result => showAllMobiles(result.data, result.status))
+            .then(result => showAllMobiles(result.data.slice(0, 19), result.status))
 
     }
 
 }
 
+
+
 const showAllMobiles = (mobiles, status) => {
     if (status == false) {
-
+        document.getElementById('text1').style.display = "block";
+        document.getElementById('text1').innerHTML = "API data not found";
     }
     else {
 
@@ -52,13 +64,12 @@ const showAllMobiles = (mobiles, status) => {
             mobileDiv.appendChild(div)
 
         })
-
+        toggleLoading('none')
+        toggleShowMore('block')
         mobileDetailDiv.textContent = '';
     }
 
 }
-
-/* Load All Mobile Details By ID */
 
 const loadMobileDetails = mobileId => {
     const url = `https://openapi.programming-hero.com/api/phone/${mobileId}`
@@ -74,7 +85,6 @@ const loadMobileDetails = mobileId => {
 
 const mobileDetailDiv = document.getElementById('mobile-details');
 const mobiledetails = mobile => {
-
     mobileDetailDiv.textContent = '';
     const div = document.createElement('div');
     div.classList.add('card');
@@ -111,4 +121,11 @@ const mobiledetails = mobile => {
     mobileDetailDiv.appendChild(div);
 
 }
+
+
+
+
+
+
+
 
