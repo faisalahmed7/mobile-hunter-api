@@ -70,3 +70,26 @@ const loadMobileDetails = mobileId => {
         .then(res => res.json())
         .then(result => mobiledetails(result.data))
 }
+
+
+const mobileDetailDiv = document.getElementById('mobile-details');
+const mobiledetails = mobile => {
+
+    mobileDetailDiv.textContent = '';
+    const div = document.createElement('div');
+    div.classList.add('card');
+
+    div.innerHTML = `
+    <img src="${mobile.image}" class="card-img-top w-25 mt-3 mx-auto " alt="...">
+    <div class="card-body">
+        <h3><strong>Brand:  </strong>${mobile.brand}</h3>
+        <h5><strong> ${mobile.name}  </strong> </h5>
+        <p><strong>Realease Date: </strong> ${mobile.releaseDate ? mobile.releaseDate : 'Not Found'}  </p>
+      
+   
+    </div>
+   
+`
+    mobileDetailDiv.appendChild(div);
+
+}
