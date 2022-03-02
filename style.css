@@ -1,0 +1,30 @@
+body{
+    margin: 0;
+    padding: 0;
+    background-color: #E6E6FA;
+    
+}
+
+#error {
+
+    color: #ff0000;
+    padding: 10px;
+    font-size: 25px;
+    text-align: center;
+    font-family: serif;
+   
+}
+
+#loading{
+    display:none;
+}
+
+#show-more-btn{
+    display: none;
+}
+
+.card{
+    background-color: white;
+    border: 3px solid #0D0D0D;
+    border-radius: 5px;
+}

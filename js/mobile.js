@@ -1,13 +1,15 @@
 
-
+/* Loading... Display Handle */
 const toggleLoading = displayStyle => {
-    document.getElementById('spinner').style.display = displayStyle;
+    document.getElementById('loading').style.display = displayStyle;
+
+    /*  Show More Button Handle  */
 }
 const toggleShowMore = displayStyle => {
     document.getElementById('show-more-btn').style.display = displayStyle;
 }
 
-
+/* Loading All Mobile Data From API */
 const loadAllMobile = () => {
     const searchArea = document.getElementById('search-area');
     const searchInText = searchArea.value;
@@ -15,13 +17,12 @@ const loadAllMobile = () => {
 
     if (searchInText.length == 0) {
         toggleLoading('none')
-        document.getElementById('text1').innerHTML = "Please enter something to continue search!!!";
+        document.getElementById('error').innerHTML = "Please enter something to continue search!!!";
 
-    } else {
+    }
+    else {
         toggleLoading('block')
-
-
-        document.getElementById('text1').style.display = "none";
+        document.getElementById('error').style.display = "none";
         searchArea.value = '';
         const url = `https://openapi.programming-hero.com/api/phones?search=${searchInText}`
         fetch(url)
@@ -33,11 +34,11 @@ const loadAllMobile = () => {
 }
 
 
-
+/* Display ALL Mobile in card layout */
 const showAllMobiles = (mobiles, status) => {
     if (status == false) {
-        document.getElementById('text1').style.display = "block";
-        document.getElementById('text1').innerHTML = "API data not found";
+        document.getElementById('error').style.display = "block";
+        document.getElementById('error').innerHTML = "API data not found";
     }
     else {
 
@@ -57,7 +58,7 @@ const showAllMobiles = (mobiles, status) => {
                 <div class="card-body mx-auto">
                     <h5 class="card-title">${mobile.brand}</h5>
                     <p class="card-text">${mobile.phone_name}</p>
-                    <a href="#"> <button  onclick="loadMobileDetails('${mobile.slug}')"  class="btn btn-primary ">Details</button></a>
+                    <a href="#"> <button  onclick="loadMobileDetails('${mobile.slug}')"  class="btn btn-primary">Details</button></a>
                 </div>
             </div>
         `
@@ -71,6 +72,7 @@ const showAllMobiles = (mobiles, status) => {
 
 }
 
+/* Load All Mobile Data By Using ID From API*/
 const loadMobileDetails = mobileId => {
     const url = `https://openapi.programming-hero.com/api/phone/${mobileId}`
 
@@ -82,7 +84,7 @@ const loadMobileDetails = mobileId => {
         .then(result => mobiledetails(result.data))
 }
 
-
+/* Display Sngle Mobile Details */
 const mobileDetailDiv = document.getElementById('mobile-details');
 const mobiledetails = mobile => {
     mobileDetailDiv.textContent = '';
@@ -108,12 +110,12 @@ const mobiledetails = mobile => {
         ${mobile.mainFeatures.sensors[4] ? mobile.mainFeatures.sensors[4] : 'Not Found'},
         ${mobile.mainFeatures.sensors[5] ? mobile.mainFeatures.sensors[5] : 'Not Found'} </p> 
         <p><strong>Others: </strong></p>
-        <p><strong>WLAN: </strong> ${mobile?.others?.WLAN ?? ''}  </p>
-        <p><strong>Bluetooth: </strong> ${mobile?.others?.Bluetooth ?? ''}  </p>
-        <p><strong>GPS: </strong> ${mobile?.others?.GPS ?? ''}  </p>
-        <p><strong>NFC: </strong> ${mobile?.others?.NFC ?? ''}  </p>
-        <p><strong>Radio: </strong> ${mobile?.others?.Radio ?? ''}  </p>
-        <p><strong>USB: </strong> ${mobile?.others?.USB ?? ''}  </p>
+        <p><strong>WLAN: </strong> ${mobile?.others?.WLAN ?? 'Not Found'}  </p>
+        <p><strong>Bluetooth: </strong> ${mobile?.others?.Bluetooth ?? 'Not Found'}  </p>
+        <p><strong>GPS: </strong> ${mobile?.others?.GPS ?? 'Not Found'}  </p>
+        <p><strong>NFC: </strong> ${mobile?.others?.NFC ?? 'Not Found'}  </p>
+        <p><strong>Radio: </strong> ${mobile?.others?.Radio ?? 'Not Found'}  </p>
+        <p><strong>USB: </strong> ${mobile?.others?.USB ?? 'Not Found'}  </p>
    
     </div>
    
